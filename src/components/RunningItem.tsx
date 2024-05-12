@@ -1,10 +1,15 @@
-import { RunningItemType } from '../runData';
+import { RunningItem, calculateAveragePace } from '../runData';
 
-type RunningItemProps = {
-  item: RunningItemType;
-};
+interface RunningItemProps {
+  item: RunningItem;
+}
 
-export const RunningItem = ({ item }: RunningItemProps) => {
+// 8 may 2024
+// 5.19 km
+// 31:35
+// 6:05 / km
+
+export const RunningItems = ({ item }: RunningItemProps) => {
   return (
     <div
       key={item.duration}
@@ -14,9 +19,12 @@ export const RunningItem = ({ item }: RunningItemProps) => {
         padding: '8px',
       }}
     >
-      <p>{item.date}</p>
-      <p>{item.distance}</p>
-      <p>{item.duration}</p>
+      <p>Date: {item.date}</p>
+      <p>Distance: {item.distance}km</p>
+      <p>Duration: {item.duration}</p>
+      <p>
+        Average Pace: {calculateAveragePace(item.duration, item.distance)} km/h
+      </p>
     </div>
   );
 };

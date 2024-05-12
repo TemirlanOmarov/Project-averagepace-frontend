@@ -6,10 +6,12 @@ export const Navbar = () => {
       style={{
         padding: '16px',
         backgroundColor: 'gray',
-        textAlign: 'center',
+        display: 'flex',
+        gap: '16px',
       }}
     >
       <Link to="/">TEMIRRUN</Link>
+      <Link to="/contacts">Contacts</Link>
     </nav>
   );
 };
