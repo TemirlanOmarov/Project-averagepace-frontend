@@ -1,7 +1,12 @@
-import { RunningItem, calculateAveragePace } from '../runData';
+import { format } from 'date-fns';
+import { RunningItemType } from '../constants/data';
+import { calculateAveragePace } from '../utils/calculateAveragePace';
+import { formatDistance } from '../utils/formatDistance';
+
+import { ru } from 'date-fns/locale';
 
 interface RunningItemProps {
-  item: RunningItem;
+  item: RunningItemType;
 }
 
 // 8 may 2024
@@ -9,7 +14,7 @@ interface RunningItemProps {
 // 31:35
 // 6:05 / km
 
-export const RunningItems = ({ item }: RunningItemProps) => {
+export const RunningItem = ({ item }: RunningItemProps) => {
   return (
     <div
       key={item.duration}
@@ -19,11 +24,16 @@ export const RunningItems = ({ item }: RunningItemProps) => {
         padding: '8px',
       }}
     >
-      <p>Date: {item.date}</p>
-      <p>Distance: {item.distance}km</p>
+      <p>
+        Date:{' '}
+        {format(new Date(item.date), 'PP', {
+          locale: ru,
+        })}
+      </p>
+      <p>Distance: {formatDistance(item.distance)}</p>
       <p>Duration: {item.duration}</p>
       <p>
-        Average Pace: {calculateAveragePace(item.duration, item.distance)} km/h
+        Average Pace: {calculateAveragePace(item.duration, item.distance)} km
       </p>
     </div>
   );

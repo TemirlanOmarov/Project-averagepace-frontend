@@ -1,11 +1,11 @@
-import { runData } from '../runData';
-import { RunningItems } from '../components/RunningItem';
+import { RunningItem } from '../components/RunningItem';
+import { data } from '../constants/data';
 
 export const Home = () => {
   return (
     <div>
-      {runData.map((item) => {
-        return <RunningItems item={item} />;
+      {data.map((item) => {
+        return <RunningItem item={item} />;
       })}
     </div>
   );
