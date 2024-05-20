@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { RunningItem } from '../components/RunningItem';
 import { data } from '../constants/data';
 
@@ -21,14 +21,14 @@ export const Home = () => {
     setDistance('');
     setDuration('');
   };
-  const handleDate = ({ target }) => {
-    setDate(target.value);
+  const handleDate = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setDate(target?.value);
   };
-  const handleDistance = ({ target }) => {
-    setDistance(target.value);
+  const handleDistance = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setDistance(target?.value);
   };
-  const handelDuration = ({ target }) => {
-    setDuration(target.value);
+  const handelDuration = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setDuration(target?.value);
   };
 
   return (
