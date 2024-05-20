@@ -17,9 +17,9 @@ export const Home = () => {
         distance: +distance,
       },
     ]);
+    setDistance('jaskdjgkl');
     setDate('');
-    setDistance('');
-    setDuration('');
+    console.log('sfgdh');
   };
   const handleDate = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setDate(target?.value);
