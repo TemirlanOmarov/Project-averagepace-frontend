@@ -21,39 +21,55 @@ export const Home = () => {
     setDuration('');
     setDate('');
   };
+
   const handleDate = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setDate(target?.value);
   };
   const handleDistance = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setDistance(target?.value);
   };
-  const handelDuration = ({ target }: ChangeEvent<HTMLInputElement>) => {
+  const handleDuration = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setDuration(target?.value);
+  };
+
+  const handleDelete = (index: number) => {
+    setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
   return (
     <div>
-      {items.map((item) => {
-        return <RunningItem item={item} />;
-      })}
-      <div>
-        <label htmlFor="date">Date:</label>
-        <input id="date" value={date} onChange={handleDate} />
-      </div>
-      <div>
-        <label htmlFor="distance">distance:</label>
-        <input
-          id="distance"
-          type="number"
-          value={distance}
-          onChange={handleDistance}
+      {items.map((item, index) => (
+        <RunningItem
+          key={index}
+          item={item}
+          onDelete={() => handleDelete(index)}
         />
-      </div>
+      ))}
       <div>
-        <label htmlFor="duration">duration:</label>
-        <input id="duration" value={duration} onChange={handelDuration} />
+        <div>
+          <label htmlFor="date">Date:</label>
+          <input id="date" type="date" value={date} onChange={handleDate} />
+        </div>
+        <div>
+          <label htmlFor="distance">Distance:</label>
+          <input
+            id="distance"
+            type="number"
+            value={distance}
+            onChange={handleDistance}
+          />
+        </div>
+        <div>
+          <label htmlFor="duration">Duration:</label>
+          <input
+            id="duration"
+            type="number"
+            value={duration}
+            onChange={handleDuration}
+          />
+        </div>
+        <button onClick={handleClick}>Create item</button>
       </div>
-      <button onClick={handleClick}>Create item</button>
     </div>
   );
 };

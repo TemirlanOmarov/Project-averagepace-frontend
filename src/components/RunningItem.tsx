@@ -2,22 +2,20 @@ import { format } from 'date-fns';
 import { RunningItemType } from '../constants/data';
 import { calculateAveragePace } from '../utils/calculateAveragePace';
 import { formatDistance } from '../utils/formatDistance';
-
 import { ru } from 'date-fns/locale';
 
 interface RunningItemProps {
   item: RunningItemType;
+  onDelete: () => void;
 }
 
-// 8 may 2024
-// 5.19 km
-// 31:35
-// 6:05 / km
+export const RunningItem = ({ item, onDelete }: RunningItemProps) => {
+  const handleDelete = () => {
+    onDelete();
+  };
 
-export const RunningItem = ({ item }: RunningItemProps) => {
   return (
     <div
-      key={item.duration}
       style={{
         backgroundColor: 'red',
         marginBottom: '12px',
@@ -35,6 +33,7 @@ export const RunningItem = ({ item }: RunningItemProps) => {
       <p>
         Average Pace: {calculateAveragePace(item.duration, item.distance)} km
       </p>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 };
