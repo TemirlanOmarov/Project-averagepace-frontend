@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { RunningItem } from '../components/RunningItem';
 import { data } from '../constants/data';
+import { Box, Grid, Stack } from '@mui/material';
 
 export const Home = () => {
   const [items, setItems] = useState(data);
@@ -9,6 +10,14 @@ export const Home = () => {
   const [duration, setDuration] = useState('');
 
   const handleClick = () => {
+    console.log({ distance, duration, date });
+    // validation
+    if (distance === '' || duration === '' || date === '') {
+      alert('Some fields are empty!');
+      return;
+    }
+
+    // create new item (update the list)
     setItems((prevItems) => [
       ...prevItems,
       {
@@ -17,6 +26,8 @@ export const Home = () => {
         distance: +distance,
       },
     ]);
+
+    // reset fields
     setDistance('');
     setDuration('');
     setDate('');
@@ -37,14 +48,20 @@ export const Home = () => {
   };
 
   return (
-    <div>
-      {items.map((item, index) => (
-        <RunningItem
-          key={index}
-          item={item}
-          onDelete={() => handleDelete(index)}
-        />
-      ))}
+    <Box p={2} bgcolor="#f3f3f3">
+      <Box>
+        <Grid container spacing={2}>
+          {items.map((item, index) => (
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+              <RunningItem
+                key={index}
+                item={item}
+                onDelete={() => handleDelete(index)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
       <div>
         <div>
           <label htmlFor="date">Date:</label>
@@ -70,6 +87,6 @@ export const Home = () => {
         </div>
         <button onClick={handleClick}>Create item</button>
       </div>
-    </div>
+    </Box>
   );
 };
