@@ -1,13 +1,16 @@
 export function calculateAveragePace(
   duration: number,
-  distance: number,
+  distanceM: number,
 ): string {
-  const totalSeconds = (duration / distance) * 1000;
+  const distanceKm = distanceM / 1000;
 
-  const minutes = Math.floor(totalSeconds / 60);
+  return `${duration / distanceKm} min / km`;
+  // const totalSeconds = (duration / distance) * 1000;
 
-  const seconds = Math.floor(totalSeconds % 60);
-  const secondsStr = seconds < 10 ? `0${seconds}` : seconds;
+  // const minutes = Math.floor(totalSeconds / 60);
 
-  return `${minutes}:${secondsStr}`;
+  // const seconds = Math.floor(totalSeconds % 60);
+  // const secondsStr = seconds < 10 ? `0${seconds}` : seconds;
+
+  // return `${minutes}:${secondsStr}`;
 }

@@ -49,8 +49,7 @@ export const RunningItem = ({
             <Typography>Distance:{formatDistance(item.distance)}</Typography>
             <Typography>Duration: {formatDuration(item.duration)}</Typography>
             <Typography>
-              Average Pace: {calculateAveragePace(item.duration, item.distance)}{' '}
-              km/min
+              Average Pace: {calculateAveragePace(item.duration, item.distance)}
             </Typography>
           </>
         )}
