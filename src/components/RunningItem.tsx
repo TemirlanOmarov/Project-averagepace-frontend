@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Formsubmit } from '../pages/Formsubmit';
+import { formatDuration } from '../utils/formatDuration';
 
 interface RunningItemProps {
   item: RunningItemType;
@@ -45,7 +46,7 @@ export const RunningItem = ({
             <Typography>
               Date: {format(new Date(item.date), 'PP', { locale: ru })}
             </Typography>
-            <Typography>Distance: {formatDistance(item.distance)}</Typography>
+            <Typography>Distance:s{formatDistance(item.distance)}</Typography>
             <Typography>Duration: {item.duration} minutes</Typography>
             <Typography>
               Average Pace: {calculateAveragePace(item.duration, item.distance)}{' '}
