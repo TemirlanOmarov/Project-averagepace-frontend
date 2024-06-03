@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+
+const GET_RUNS = gql`
+  query GetRuns {
+    listRuns {
+      id
+      duration
+      date
+      distance
+    }
+  }
+`;
 
 export const Lab = () => {
-  const [friends] = useState(['Bex', 'Temir']);
+  const { loading, error, data } = useQuery(GET_RUNS);
 
-  return (
-    <div>
-      {friends.map((friend, index) => {
-        return (
-          <div key={index}>
-            <p>{friend}</p>
-          </div>
-        );
-      })}
+  if (loading) return <p>Loading...</p>;
+
+  if (error) return <p>Error : {error.message}</p>;
+
+  return data.listRuns.map(({ id, duration, date, distance }) => (
+    <div key={id}>
+      <h3>{id}</h3>
+      <h2>{duration}</h2>
+      <h3>{date}</h3>
+      <h4>{distance}</h4>
     </div>
-  );
+  ));
 };

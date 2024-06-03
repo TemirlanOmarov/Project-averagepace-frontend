@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { RunningItem } from '../components/RunningItem';
-import { RunningItemType, data } from '../constants/data';
+import { RunningItemType } from '../constants/data';
 import { Box, Grid } from '@mui/material';
 import { RunForm } from './RunForm';
+import { gql, useQuery } from '@apollo/client';
 
-export const Home = () => {
-  const [items, setItems] = useState(data);
+const HomeView = ({ runs }: { runs: RunningItemType[] }) => {
+  const [items, setItems] = useState<RunningItemType[]>(runs);
 
   const handleDelete = (index: number) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
@@ -38,4 +39,43 @@ export const Home = () => {
       </Box>
     </Box>
   );
+};
+
+const GET_RUNS = gql`
+  query GetRuns {
+    listRuns {
+      id
+      duration
+      date
+      distance
+    }
+  }
+`;
+
+const HomeQuery = () => {
+  export const listRuns = () => {
+    const { loading, error, data } = useQuery(GET_RUNS);
+
+    if (loading) return <p>Loading...</p>;
+
+    if (error) return <p>Error : {error.message}</p>;
+
+    return data.listRuns.map(({ id, duration, date, distance }) => (
+      <div key={id}>
+        <h3>{id}</h3>
+        <h4>{duration}</h4>
+        <h2>{date}</h2>
+        <h5>{distance}</h5>
+      </div>
+    ));
+  };
+  // listRuns
+  // loading
+  // error
+
+  return <HomeView runs={[]} />;
+};
+
+export const Home = () => {
+  return <HomeQuery />;
 };
