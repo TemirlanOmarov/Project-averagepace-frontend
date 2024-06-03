@@ -1,5 +1,13 @@
 import { RunningItemType } from '../constants/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from '@mui/material';
 
 type Inputs = {
   date: string;
@@ -82,7 +90,17 @@ export const RunForm = ({
         />
         {errors.duration && <span>This field is required</span>}
       </div>
-      <button type="submit">Create item</button>
+
+      <Button
+        type="submit"
+        variant="contained"
+        size="small"
+        sx={{
+          mt: 1,
+        }}
+      >
+        Create item
+      </Button>
     </form>
   );
 };

@@ -1,5 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { RunningItemType } from '../constants/data';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from '@mui/material';
 
 interface FormsubmitProps {
   item: RunningItemType;
@@ -65,7 +73,7 @@ export const Formsubmit = ({ item, onSubmit }: FormsubmitProps) => {
         />
         {errors.duration && <span>This field is required</span>}
       </div>
-      <button type="submit">Update item</button>
+      <Button type="submit">Update item</Button>
     </form>
   );
 };

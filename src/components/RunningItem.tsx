@@ -25,6 +25,7 @@ export const RunningItem = ({
   item,
   onDelete,
   onUpdate,
+  onSubmit,
   index,
 }: RunningItemProps) => {
   const [open, setOpen] = useState(false);
@@ -44,9 +45,7 @@ export const RunningItem = ({
             <Typography>
               Date: {format(new Date(item.date), 'PP', { locale: ru })}
             </Typography>
-            <Typography>
-              Distance: {formatDistance(item.distance)} km
-            </Typography>
+            <Typography>Distance: {formatDistance(item.distance)}</Typography>
             <Typography>Duration: {item.duration} minutes</Typography>
             <Typography>
               Average Pace: {calculateAveragePace(item.duration, item.distance)}{' '}

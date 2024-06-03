@@ -33,7 +33,9 @@ export const Home = () => {
           ))}
         </Grid>
       </Box>
-      <RunForm setItems={setItems} />
+      <Box py={2}>
+        <RunForm setItems={setItems} />
+      </Box>
     </Box>
   );
 };
