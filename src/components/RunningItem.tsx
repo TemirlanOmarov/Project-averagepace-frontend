@@ -7,54 +7,62 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
-  Grid,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
+import { Formsubmit } from '../pages/Formsubmit';
 
 interface RunningItemProps {
   item: RunningItemType;
   onDelete: () => void;
+  onUpdate: (index: number, updatedItem: RunningItemType) => void;
+  index: number;
 }
 
-export const RunningItem = ({ item, onDelete }: RunningItemProps) => {
-  const handleDelete = () => {
-    onDelete();
+export const RunningItem = ({
+  item,
+  onDelete,
+  onUpdate,
+  index,
+}: RunningItemProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleUpdate = (updatedItem: RunningItemType) => {
+    onUpdate(index, updatedItem);
+    setOpen(false);
   };
 
   return (
     <Card variant="outlined">
       <CardContent>
-        <Grid container>
-          <Grid item xs={12} md={8}>
+        {open ? (
+          <Formsubmit item={item} onSubmit={handleUpdate} />
+        ) : (
+          <>
             <Typography>
-              Date:{' '}
-              {format(new Date(item.date), 'PP', {
-                locale: ru,
-              })}
+              Date: {format(new Date(item.date), 'PP', { locale: ru })}
             </Typography>
-            <Typography>Distance: {formatDistance(item.distance)}</Typography>
-            <Typography>Duration: {item.duration}</Typography>
+            <Typography>
+              Distance: {formatDistance(item.distance)} km
+            </Typography>
+            <Typography>Duration: {item.duration} minutes</Typography>
             <Typography>
               Average Pace: {calculateAveragePace(item.duration, item.distance)}{' '}
-              km
+              km/min
             </Typography>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Box
-              display="flex"
-              justifyContent={{
-                sm: 'flex-start',
-                md: 'flex-end',
-              }}
-            >
-              <Button onClick={handleDelete} color="error" variant="text">
-                Delete
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
+          </>
+        )}
       </CardContent>
+      <CardActions>
+        <Button onClick={() => setOpen(!open)} variant="text">
+          {open ? 'Cancel' : 'Edit'}
+        </Button>
+        <Button onClick={onDelete} color="error" variant="text">
+          Delete
+        </Button>
+      </CardActions>
     </Card>
   );
 };

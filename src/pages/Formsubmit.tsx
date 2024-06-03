@@ -1,47 +1,30 @@
+import { useForm } from 'react-hook-form';
 import { RunningItemType } from '../constants/data';
-import { SubmitHandler, useForm } from 'react-hook-form';
 
-type Inputs = {
-  date: string;
-  distance: string;
-  duration: string;
-};
+interface FormsubmitProps {
+  item: RunningItemType;
+  onSubmit: (data: RunningItemType) => void;
+}
 
-export const RunForm = ({
-  setItems,
-}: {
-  setItems: (value: React.SetStateAction<RunningItemType[]>) => void;
-}) => {
+export const Formsubmit = ({ item, onSubmit }: FormsubmitProps) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm({
     defaultValues: {
-      date: '',
-      distance: '',
-      duration: '',
+      date: item.date,
+      distance: item.distance,
+      duration: item.duration,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-
-    setItems((prevItems) => [
-      ...prevItems,
-      {
-        duration: +data.duration,
-        date: data.date,
-        distance: +data.distance,
-      },
-    ]);
-
-    reset();
+  const handleFormSubmit = (data: RunningItemType) => {
+    onSubmit(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
       <div>
         <label htmlFor="date">Date:</label>
         <input
@@ -82,7 +65,7 @@ export const RunForm = ({
         />
         {errors.duration && <span>This field is required</span>}
       </div>
-      <button type="submit">Create item</button>
+      <button type="submit">Update item</button>
     </form>
   );
 };
