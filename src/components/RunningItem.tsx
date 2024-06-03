@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { RunningItemType } from '../constants/data';
 import { calculateAveragePace } from '../utils/calculateAveragePace';
 import { formatDistance } from '../utils/formatDistance';
+import { formatDuration } from '../utils/formatDuraction';
 import { ru } from 'date-fns/locale';
 import {
   Box,
@@ -13,7 +14,6 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Formsubmit } from '../pages/Formsubmit';
-import { formatDuration } from '../utils/formatDuration';
 
 interface RunningItemProps {
   item: RunningItemType;
@@ -46,8 +46,8 @@ export const RunningItem = ({
             <Typography>
               Date: {format(new Date(item.date), 'PP', { locale: ru })}
             </Typography>
-            <Typography>Distance:s{formatDistance(item.distance)}</Typography>
-            <Typography>Duration: {item.duration} minutes</Typography>
+            <Typography>Distance:{formatDistance(item.distance)}</Typography>
+            <Typography>Duration: {formatDuration(item.duration)}</Typography>
             <Typography>
               Average Pace: {calculateAveragePace(item.duration, item.distance)}{' '}
               km/min
