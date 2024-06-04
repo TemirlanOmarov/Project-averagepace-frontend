@@ -22,12 +22,17 @@ export const RunForm = () => {
     },
   });
   const ADD_TODO = gql`
-    mutation CreateRun {
+    mutation CreateRun(
+      $date: DateTime!
+      $distance: Float!
+      $duration: Int!
+      $averagePace: String!
+    ) {
       createRun(
-        date: DateTime
-        distance: Float
-        duration: Int
-        averagePace: String
+        date: $date
+        distance: $distance
+        duration: $duration
+        averagePace: $averagePace
       ) {
         id
       }
