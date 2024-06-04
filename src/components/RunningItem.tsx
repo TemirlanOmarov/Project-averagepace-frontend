@@ -1,8 +1,5 @@
 import { format } from 'date-fns';
 import { RunningItemType } from '../constants/data';
-import { calculateAveragePace } from '../utils/calculateAveragePace';
-import { formatDistance } from '../utils/formatDistance';
-import { formatDuration } from '../utils/formatDuraction';
 import { ru } from 'date-fns/locale';
 import {
   Button,
@@ -25,7 +22,6 @@ const DELETE_RUN = gql`
     }
   }
 `;
-
 export const RunningItem = ({ item }: RunningItemProps) => {
   const [open, setOpen] = useState(false);
 
@@ -37,7 +33,6 @@ export const RunningItem = ({ item }: RunningItemProps) => {
   function deleteItem(id: string) {
     deleteRun({ variables: { id } });
   }
-
   return (
     <Card variant="outlined">
       <CardContent>
@@ -48,11 +43,9 @@ export const RunningItem = ({ item }: RunningItemProps) => {
             <Typography>
               Date: {format(new Date(item.date), 'PP', { locale: ru })}
             </Typography>
-            <Typography>Distance:{formatDistance(item.distance)}</Typography>
-            <Typography>Duration: {formatDuration(item.duration)}</Typography>
-            <Typography>
-              Average Pace: {calculateAveragePace(item.duration, item.distance)}
-            </Typography>
+            <Typography>Distance:{item.distanceString}</Typography>
+            <Typography>Duration: {item.durationString}</Typography>
+            <Typography>Average Pace: {item.averagePace}</Typography>
           </>
         )}
       </CardContent>

@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { RunningItemType } from '../constants/data';
 import { Button } from '@mui/material';
+import { gql, useMutation } from '@apollo/client';
 
 interface FormsubmitProps {
   item: RunningItemType;
@@ -22,6 +23,21 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
   const handleFormSubmit = (data: RunningItemType) => {
     console.log(data);
   };
+
+  const UPDATE_RUN = gql`
+    mutation UpdateRun($date: String!, $distance: Float!, $duration: Int!) {
+      updateRun(date: $date, distance: $distance, duration: $duration) {
+        date
+        distance
+        duration
+      }
+    }
+  `;
+  const [updateRun] = useMutation(UPDATE_RUN);
+
+  function updateItem(id: string) {
+    updateRun({ variables: { id } });
+  }
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -65,7 +81,13 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
         />
         {errors.duration && <span>This field is required</span>}
       </div>
-      <Button type="submit">Update item</Button>
+      <Button
+        color="success"
+        variant="text"
+        onClick={() => updateItem(item.id!)}
+      >
+        Update item
+      </Button>
     </form>
   );
 };

@@ -27,9 +27,12 @@ const GET_RUNS = gql`
   query GetRuns {
     listRuns {
       id
-      duration
       date
+      duration
+      durationString
       distance
+      distanceString
+      averagePace
     }
   }
 `;

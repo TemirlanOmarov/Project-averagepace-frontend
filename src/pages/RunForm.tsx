@@ -22,19 +22,10 @@ export const RunForm = () => {
       duration: '',
     },
   });
-  const ADD_TODO = gql`
-    mutation CreateRun(
-      $date: String!
-      $distance: Float!
-      $duration: Int!
-      $averagePace: String!
-    ) {
-      createRun(
-        date: $date
-        distance: $distance
-        duration: $duration
-        averagePace: $averagePace
-      ) {
+
+  const CREATE_RUN = gql`
+    mutation CreateRun($date: String!, $distance: Float!, $duration: Int!) {
+      createRun(date: $date, distance: $distance, duration: $duration) {
         id
         duration
         date
@@ -42,7 +33,8 @@ export const RunForm = () => {
       }
     }
   `;
-  const [createRun, { data, loading, error }] = useMutation(ADD_TODO);
+
+  const [createRun, { loading, error }] = useMutation(CREATE_RUN);
   if (loading) return 'Submitting...';
 
   if (error) return `Submission error! ${error.message}`;
@@ -53,12 +45,12 @@ export const RunForm = () => {
       +data.distance,
       +data.duration,
     );
+
     createRun({
       variables: {
         date: formatISO(data.date, { representation: 'complete' }),
         distance: +data.distance,
         duration: +data.duration,
-        averagePace: '11',
       },
     });
 
