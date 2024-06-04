@@ -1,13 +1,6 @@
-import { RunningItemType } from '../constants/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from '@mui/material';
+import { Button } from '@mui/material';
+import { gql, useMutation } from '@apollo/client';
 
 type Inputs = {
   date: string;
@@ -15,11 +8,7 @@ type Inputs = {
   duration: string;
 };
 
-export const RunForm = ({
-  setItems,
-}: {
-  setItems: (value: React.SetStateAction<RunningItemType[]>) => void;
-}) => {
+export const RunForm = () => {
   const {
     register,
     handleSubmit,
@@ -32,18 +21,34 @@ export const RunForm = ({
       duration: '',
     },
   });
+  const ADD_TODO = gql`
+    mutation CreateRun {
+      createRun(
+        date: DateTime
+        distance: Float
+        duration: Int
+        averagePace: String
+      ) {
+        id
+      }
+    }
+  `;
+  const [createRun, { data }] = useMutation(ADD_TODO);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-
-    setItems((prevItems) => [
-      ...prevItems,
-      {
-        duration: +data.duration,
-        date: data.date,
+    console.log(
+      new Date(data.date).toISOString(),
+      +data.distance,
+      +data.duration,
+    );
+    createRun({
+      variables: {
+        date: new Date(data.date).toISOString(),
         distance: +data.distance,
+        duration: +data.duration,
+        averagePace: '222',
       },
-    ]);
+    });
 
     reset();
   };

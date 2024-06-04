@@ -1,7 +1,9 @@
 export interface RunningItemType {
+  id?: string;
   duration: number;
   date: string;
   distance: number;
+  averagePace?: string;
 }
 
 export const data: RunningItemType[] = [

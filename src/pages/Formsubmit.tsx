@@ -1,20 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { RunningItemType } from '../constants/data';
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from '@mui/material';
+import { Button } from '@mui/material';
 
 interface FormsubmitProps {
   item: RunningItemType;
-  onSubmit: (data: RunningItemType) => void;
 }
 
-export const Formsubmit = ({ item, onSubmit }: FormsubmitProps) => {
+export const Formsubmit = ({ item }: FormsubmitProps) => {
   const {
     register,
     handleSubmit,
@@ -28,7 +20,7 @@ export const Formsubmit = ({ item, onSubmit }: FormsubmitProps) => {
   });
 
   const handleFormSubmit = (data: RunningItemType) => {
-    onSubmit(data);
+    console.log(data);
   };
 
   return (

@@ -5,7 +5,6 @@ import { formatDistance } from '../utils/formatDistance';
 import { formatDuration } from '../utils/formatDuraction';
 import { ru } from 'date-fns/locale';
 import {
-  Box,
   Button,
   Card,
   CardActions,
@@ -14,33 +13,32 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Formsubmit } from '../pages/Formsubmit';
+import { gql, useMutation } from '@apollo/client';
 
 interface RunningItemProps {
   item: RunningItemType;
-  onDelete: () => void;
-  onUpdate: (index: number, updatedItem: RunningItemType) => void;
-  index: number;
 }
+const ADD_TODO = gql`
+  mutation MyMutation {
+    deleteRun(id: String) {
+      id
+    }
+  }
+`;
 
-export const RunningItem = ({
-  item,
-  onDelete,
-  onUpdate,
-  onSubmit,
-  index,
-}: RunningItemProps) => {
+export const RunningItem = ({ item }: RunningItemProps) => {
   const [open, setOpen] = useState(false);
+  const [deleteRun, { data }] = useMutation(ADD_TODO);
 
-  const handleUpdate = (updatedItem: RunningItemType) => {
-    onUpdate(index, updatedItem);
-    setOpen(false);
-  };
+  function deleteItem(id: any) {
+    deleteRun({ variables: { id } });
+  }
 
   return (
     <Card variant="outlined">
       <CardContent>
         {open ? (
-          <Formsubmit item={item} onSubmit={handleUpdate} />
+          <Formsubmit item={item} />
         ) : (
           <>
             <Typography>
@@ -58,7 +56,11 @@ export const RunningItem = ({
         <Button onClick={() => setOpen(!open)} variant="text">
           {open ? 'Cancel' : 'Edit'}
         </Button>
-        <Button onClick={onDelete} color="error" variant="text">
+        <Button
+          color="error"
+          variant="text"
+          onClick={() => deleteItem(item?.id)}
+        >
           Delete
         </Button>
       </CardActions>

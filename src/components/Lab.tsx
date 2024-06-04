@@ -10,6 +10,12 @@ const GET_RUNS = gql`
     }
   }
 `;
+export interface RunningItemType {
+  id: string;
+  duration: number;
+  date: string;
+  distance: number;
+}
 
 export const Lab = () => {
   const { loading, error, data } = useQuery(GET_RUNS);
