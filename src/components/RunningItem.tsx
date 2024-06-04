@@ -18,14 +18,9 @@ import { gql, useMutation } from '@apollo/client';
 interface RunningItemProps {
   item: RunningItemType;
 }
-const ADD_TODO = gql`
-  mutation MyMutation(
-    $date: DateTime!
-    $distance: Float
-    $duration: Int
-    $averagePace: String
-  ) {
-    deleteRun(id: String) {
+const DELETE_RUN = gql`
+  mutation DeleteRun($id: String!) {
+    deleteRun(id: $id) {
       id
     }
   }
@@ -33,9 +28,13 @@ const ADD_TODO = gql`
 
 export const RunningItem = ({ item }: RunningItemProps) => {
   const [open, setOpen] = useState(false);
-  const [deleteRun, { data }] = useMutation(ADD_TODO);
 
-  function deleteItem(id: any) {
+  const [deleteRun, { loading, error }] = useMutation(DELETE_RUN);
+
+  if (loading) return 'Submitting...';
+  if (error) return `Submission error! ${error.message}`;
+
+  function deleteItem(id: string) {
     deleteRun({ variables: { id } });
   }
 
@@ -64,7 +63,7 @@ export const RunningItem = ({ item }: RunningItemProps) => {
         <Button
           color="error"
           variant="text"
-          onClick={() => deleteItem(item?.id)}
+          onClick={() => deleteItem(item.id!)}
         >
           Delete
         </Button>

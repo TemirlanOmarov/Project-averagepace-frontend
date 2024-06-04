@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
+import { formatISO } from 'date-fns';
 
 type Inputs = {
   date: string;
@@ -23,7 +24,7 @@ export const RunForm = () => {
   });
   const ADD_TODO = gql`
     mutation CreateRun(
-      $date: DateTime!
+      $date: String!
       $distance: Float!
       $duration: Int!
       $averagePace: String!
@@ -35,6 +36,9 @@ export const RunForm = () => {
         averagePace: $averagePace
       ) {
         id
+        duration
+        date
+        distance
       }
     }
   `;
@@ -51,10 +55,10 @@ export const RunForm = () => {
     );
     createRun({
       variables: {
-        date: new Date(data.date).toISOString(),
+        date: formatISO(data.date, { representation: 'complete' }),
         distance: +data.distance,
         duration: +data.duration,
-        averagePace: '222',
+        averagePace: '11',
       },
     });
 
