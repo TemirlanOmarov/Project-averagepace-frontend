@@ -6,39 +6,54 @@ import { gql, useMutation } from '@apollo/client';
 interface FormsubmitProps {
   item: RunningItemType;
 }
+const UPDATE_RUN = gql`
+  mutation UpdateRun(
+    $id: String!
+    $date: String!
+    $distance: Float!
+    $duration: Int!
+  ) {
+    updateRun(id: $id, date: $date, distance: $distance, duration: $duration) {
+      id
+      date
+      distance
+      duration
+    }
+  }
+`;
+
+type Inputs = {
+  date: Date;
+  duration: string;
+  distance: string;
+};
 
 export const Formsubmit = ({ item }: FormsubmitProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<Inputs>({
     defaultValues: {
-      date: item.date,
-      distance: item.distance,
-      duration: item.duration,
+      date: new Date(item.date),
+      distance: item.distance.toString(),
+      duration: item.duration.toString(),
     },
   });
 
-  const handleFormSubmit = (data: RunningItemType) => {
-    console.log(data);
-  };
-
-  const UPDATE_RUN = gql`
-    mutation UpdateRun($date: String!, $distance: Float!, $duration: Int!) {
-      updateRun(date: $date, distance: $distance, duration: $duration) {
-        date
-        distance
-        duration
-      }
-    }
-  `;
   const [updateRun] = useMutation(UPDATE_RUN);
 
-  function updateItem(id: string) {
-    updateRun({ variables: { id } });
-  }
-
+  const handleFormSubmit = (data: Inputs) => {
+    console.log(data);
+    updateRun({
+      variables: {
+        id: item.id,
+        duration: item.duration,
+        distance: item.distance,
+        date: item.date,
+      },
+    });
+  };
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
       <div>
@@ -81,11 +96,7 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
         />
         {errors.duration && <span>This field is required</span>}
       </div>
-      <Button
-        color="success"
-        variant="text"
-        onClick={() => updateItem(item.id!)}
-      >
+      <Button color="success" variant="text" type="submit">
         Update item
       </Button>
     </form>
