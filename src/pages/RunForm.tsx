@@ -38,7 +38,10 @@ export const RunForm = () => {
       }
     }
   `;
-  const [createRun, { data }] = useMutation(ADD_TODO);
+  const [createRun, { data, loading, error }] = useMutation(ADD_TODO);
+  if (loading) return 'Submitting...';
+
+  if (error) return `Submission error! ${error.message}`;
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(

@@ -19,7 +19,12 @@ interface RunningItemProps {
   item: RunningItemType;
 }
 const ADD_TODO = gql`
-  mutation MyMutation {
+  mutation MyMutation(
+    $date: DateTime!
+    $distance: Float
+    $duration: Int
+    $averagePace: String
+  ) {
     deleteRun(id: String) {
       id
     }
