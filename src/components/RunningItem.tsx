@@ -41,7 +41,8 @@ export const RunningItem = ({ item }: RunningItemProps) => {
         ) : (
           <>
             <Typography>
-              Date: {format(new Date(item.date), 'PP', { locale: ru })}
+              Date:{' '}
+              {format(new Date(item.date).toISOString(), 'PP', { locale: ru })}
             </Typography>
             <Typography>Distance:{item.distanceString}</Typography>
             <Typography>Duration: {item.durationString}</Typography>

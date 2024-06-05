@@ -24,7 +24,7 @@ const UPDATE_RUN = gql`
 `;
 
 type Inputs = {
-  date: Date;
+  date: string;
   duration: string;
   distance: string;
 };
@@ -36,7 +36,7 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      date: new Date(item.date),
+      date: item.date.toString(),
       distance: item.distance.toString(),
       duration: item.duration.toString(),
     },
@@ -45,12 +45,12 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
   const [updateRun] = useMutation(UPDATE_RUN);
 
   const handleFormSubmit = (data: Inputs) => {
-    console.log(data);
+    // console.log(data);
     updateRun({
       variables: {
         id: item.id,
-        duration: item.duration,
-        distance: item.distance,
+        duration: Number.parseInt(data.duration),
+        distance: Number.parseFloat(data.distance),
         date: formatISO(data.date, { representation: 'complete' }),
       },
     });
