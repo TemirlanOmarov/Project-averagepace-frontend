@@ -1,12 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { RunningItemType } from '../constants/data';
-import { Button } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
 import { formatISO } from 'date-fns';
+import { LoadingButton } from '@mui/lab';
 
-interface FormsubmitProps {
-  item: RunningItemType;
-}
 const UPDATE_RUN = gql`
   mutation UpdateRun(
     $id: String!
@@ -17,8 +14,11 @@ const UPDATE_RUN = gql`
     updateRun(id: $id, date: $date, distance: $distance, duration: $duration) {
       id
       date
-      distance
       duration
+      durationString
+      distance
+      distanceString
+      averagePace
     }
   }
 `;
@@ -29,7 +29,12 @@ type Inputs = {
   distance: string;
 };
 
-export const Formsubmit = ({ item }: FormsubmitProps) => {
+interface FormsubmitProps {
+  item: RunningItemType;
+  handleClose: () => void;
+}
+
+export const Formsubmit = ({ item, handleClose }: FormsubmitProps) => {
   const {
     register,
     handleSubmit,
@@ -42,7 +47,7 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
     },
   });
 
-  const [updateRun] = useMutation(UPDATE_RUN);
+  const [updateRun, { loading }] = useMutation(UPDATE_RUN);
 
   const handleFormSubmit = (data: Inputs) => {
     // console.log(data);
@@ -52,6 +57,9 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
         duration: Number.parseInt(data.duration),
         distance: Number.parseFloat(data.distance),
         date: formatISO(data.date, { representation: 'complete' }),
+      },
+      onCompleted() {
+        handleClose();
       },
     });
   };
@@ -97,9 +105,15 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
         />
         {errors.duration && <span>This field is required</span>}
       </div>
-      <Button color="success" variant="text" type="submit">
+      <LoadingButton
+        color="success"
+        variant="contained"
+        type="submit"
+        loading={loading}
+        // disabled={loading}
+      >
         Update item
-      </Button>
+      </LoadingButton>
     </form>
   );
 };

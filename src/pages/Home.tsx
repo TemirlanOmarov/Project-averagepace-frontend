@@ -23,7 +23,7 @@ const HomeView = ({ runs }: { runs: RunningItemType[] }) => {
   );
 };
 
-const GET_RUNS = gql`
+export const GET_RUNS = gql`
   query GetRuns {
     listRuns {
       id

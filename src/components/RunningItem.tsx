@@ -30,14 +30,31 @@ export const RunningItem = ({ item }: RunningItemProps) => {
   if (loading) return 'Submitting...';
   if (error) return `Submission error! ${error.message}`;
 
-  function deleteItem(id: string) {
-    deleteRun({ variables: { id } });
+  function deleteItem() {
+    deleteRun({
+      variables: {
+        id: item.id,
+      },
+      update(cache) {
+        const normalizedId = cache.identify({
+          id: item.id,
+          __typename: 'Run',
+        });
+        cache.evict({ id: normalizedId });
+        cache.gc();
+      },
+    });
   }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Card variant="outlined">
       <CardContent>
         {open ? (
-          <Formsubmit item={item} />
+          <Formsubmit item={item} handleClose={handleClose} />
         ) : (
           <>
             <Typography>
@@ -54,11 +71,7 @@ export const RunningItem = ({ item }: RunningItemProps) => {
         <Button onClick={() => setOpen(!open)} variant="text">
           {open ? 'Cancel' : 'Edit'}
         </Button>
-        <Button
-          color="error"
-          variant="text"
-          onClick={() => deleteItem(item.id!)}
-        >
+        <Button color="error" variant="text" onClick={deleteItem}>
           Delete
         </Button>
       </CardActions>
