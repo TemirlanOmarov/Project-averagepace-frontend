@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { RunningItemType } from '../constants/data';
 import { Button } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
+import { formatISO } from 'date-fns';
 
 interface FormsubmitProps {
   item: RunningItemType;
@@ -50,7 +51,7 @@ export const Formsubmit = ({ item }: FormsubmitProps) => {
         id: item.id,
         duration: item.duration,
         distance: item.distance,
-        date: item.date,
+        date: formatISO(data.date, { representation: 'complete' }),
       },
     });
   };
