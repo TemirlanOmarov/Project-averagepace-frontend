@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+import { Typography } from '@mui/material';
 
 const GET_RUNS = gql`
   query GetRuns {
