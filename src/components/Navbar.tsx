@@ -1,17 +1,23 @@
 import { Link } from 'react-router-dom';
+
 export const Navbar = () => {
   return (
     <nav
       style={{
         padding: '16px',
-        backgroundColor: 'white',
+        backgroundColor: '#282c34',
         display: 'flex',
         gap: '16px',
         justifyContent: 'center',
+        color: 'white',
       }}
     >
-      <Link to="/">Pace Calculator</Link>
-      <Link to="/contacts">Contacts</Link>
+      <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+        Pace Calculator
+      </Link>
+      <Link to="/contacts" style={{ color: 'white', textDecoration: 'none' }}>
+        Contacts
+      </Link>
     </nav>
   );
 };

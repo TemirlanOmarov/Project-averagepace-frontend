@@ -1,20 +1,17 @@
-import { format } from 'date-fns';
-import { RunningItemType } from '../constants/data';
-import { ru } from 'date-fns/locale';
+import { gql, useMutation } from '@apollo/client';
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
   Typography,
+  Button,
 } from '@mui/material';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import { useState } from 'react';
 import { Formsubmit } from '../pages/Formsubmit';
-import { gql, useMutation } from '@apollo/client';
+import { RunningItemType } from '../constants/data';
 
-interface RunningItemProps {
-  item: RunningItemType;
-}
 const DELETE_RUN = gql`
   mutation DeleteRun($id: String!) {
     deleteRun(id: $id) {
@@ -22,9 +19,9 @@ const DELETE_RUN = gql`
     }
   }
 `;
-export const RunningItem = ({ item }: RunningItemProps) => {
-  const [open, setOpen] = useState(false);
 
+export const RunningItem = ({ item }: { item: RunningItemType }) => {
+  const [open, setOpen] = useState(false);
   const [deleteRun, { loading, error }] = useMutation(DELETE_RUN);
 
   if (loading) return 'Submitting...';
@@ -36,32 +33,26 @@ export const RunningItem = ({ item }: RunningItemProps) => {
         id: item.id,
       },
       update(cache) {
-        const normalizedId = cache.identify({
-          id: item.id,
-          __typename: 'Run',
-        });
+        const normalizedId = cache.identify({ id: item.id, __typename: 'Run' });
         cache.evict({ id: normalizedId });
         cache.gc();
       },
     });
   }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" style={{ marginBottom: '20px' }}>
       <CardContent>
         {open ? (
           <Formsubmit item={item} handleClose={handleClose} />
         ) : (
           <>
             <Typography>
-              Date:{' '}
-              {format(new Date(item.date).toISOString(), 'PP', { locale: ru })}
+              Date: {format(new Date(item.date), 'PP', { locale: ru })}
             </Typography>
-            <Typography>Distance:{item.distanceString}</Typography>
+            <Typography>Distance: {item.distanceString}</Typography>
             <Typography>Duration: {item.durationString}</Typography>
             <Typography>Average Pace: {item.averagePace}</Typography>
           </>
